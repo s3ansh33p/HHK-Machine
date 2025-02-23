@@ -72,6 +72,14 @@ try {
     Remove-Item -LiteralPath "$work" -Force -Recurse
 }
 
+# [>] Install Resource Hacker
+Write-Output "Installing Resource Hacker..."
+$Download = "https://www.angusj.com/resourcehacker/reshacker_setup.exe"
+Invoke-WebRequest "$Download" -OutFile ".\reshacker_setup.exe"
+Start-Process ".\reshacker_setup.exe" -ArgumentList "/S" -Wait
+Remove-Item -Path ".\reshacker_setup.exe" -Force
+Write-Output "Resource Hacker installed successfully"
+
 # [>] Clone Hollyhock-3
 Write-Output "Cloning Hollyhock-3..."
 git clone "https://github.com/ClasspadDev/hollyhock-3.git" "C:\hollyhock-3"
