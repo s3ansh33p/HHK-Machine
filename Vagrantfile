@@ -9,7 +9,8 @@ Vagrant.configure("2") do |config|
   
   config.vm.provider "hyperv" do |h|
     h.memory = 4096  
-    h.cpus = 2 
+    h.cpus = 2
+    h.vmname = "HollyHockDev - Windows Server 2022"
   end
   
   config.vm.network "forwarded_port", guest: 3389, host: 3390, auto_correct: true
