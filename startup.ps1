@@ -47,7 +47,6 @@ function Install-MinGW {
   Add-PathEntry -To "$dest\mingw64\bin"
   Write-Output "Adding mingw32 to PATH..."
   Add-PathEntry -To "$dest\mingw32\bin"
-  Write-Output "Done!"
 }
 
 # [>] Install Git
@@ -76,7 +75,7 @@ try {
 Write-Output "Installing Resource Hacker..."
 $Download = "https://www.angusj.com/resourcehacker/reshacker_setup.exe"
 Invoke-WebRequest "$Download" -OutFile ".\reshacker_setup.exe"
-Start-Process ".\reshacker_setup.exe" -ArgumentList "/S" -Wait
+Start-Process ".\reshacker_setup.exe" -ArgumentList "/VERYSILENT", "SUPRESSMSGBOXES" -Wait
 Remove-Item -Path ".\reshacker_setup.exe" -Force
 Write-Output "Resource Hacker installed successfully"
 
