@@ -40,7 +40,7 @@ function Install-MinGW {
 
   $dest = "$env:APPDATA\mingw-dual"
   Write-Output "Writing to $dest"
-  md -Force $dest | Out-Null
+  mkdir -Force $dest | Out-Null
   Move-Item -Path ".\*" -Destination "$dest"
 
   Write-Output "Adding mingw64 to PATH..."
@@ -64,20 +64,12 @@ $origin = (Get-Item .).FullName
 $work = Join-Path $Env:Temp $(New-Guid)
 New-Item -Type Directory -Path $work | Out-Null
 try {
-    cd "$work"
+    Set-Location "$work"
     Install-MinGW
 } finally {
-    cd "$origin"
+    Set-Location "$origin"
     Remove-Item -LiteralPath "$work" -Force -Recurse
 }
-
-# [>] Install Resource Hacker
-Write-Output "Installing Resource Hacker..."
-$Download = "https://www.angusj.com/resourcehacker/reshacker_setup.exe"
-Invoke-WebRequest "$Download" -OutFile ".\reshacker_setup.exe"
-Start-Process ".\reshacker_setup.exe" -ArgumentList "/VERYSILENT", "SUPRESSMSGBOXES" -Wait
-Remove-Item -Path ".\reshacker_setup.exe" -Force
-Write-Output "Resource Hacker installed successfully"
 
 # [>] Clone Hollyhock-3
 Write-Output "Cloning Hollyhock-3..."
