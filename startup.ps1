@@ -59,6 +59,14 @@ Write-Output "Installing 7-Zip..."
 Install-Module -Name 7Zip4PowerShell -Force -Scope CurrentUser
 Write-Output "7-Zip installed successfully"
 
+# [>] Microsoft Visual C++ Redistributable
+Write-Output "Installing Microsoft Visual C++ Redistributable..."
+$Download = "https://aka.ms/vs/17/release/vc_redist.x64.exe"
+Invoke-WebRequest "$Download" -OutFile ".\vc_redist.x64.exe"
+Start-Process ".\vc_redist.x64.exe" -ArgumentList "/install", "/quiet", "/norestart" -Wait
+Remove-Item -Path ".\vc_redist.x64.exe" -Force
+Write-Output "Microsoft Visual C++ Redistributable installed successfully"
+
 # [>] Install MinGW
 $origin = (Get-Item .).FullName
 $work = Join-Path $Env:Temp $(New-Guid)
