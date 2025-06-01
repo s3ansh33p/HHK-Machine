@@ -50,9 +50,28 @@ function Install-MinGW {
 }
 
 # [>] Install Git
-Write-Output "Installing Git..."
-Install-Module -Name Git -Force -Scope CurrentUser
-Write-Output "Git installed successfully"
+Write-Output "Installing Git for Windows..."
+$gitInstaller = "$env:TEMP\Git-Setup.exe"
+Invoke-WebRequest -Uri "https://github.com/git-for-windows/git/releases/download/v2.49.0.windows.1/Git-2.49.0-64-bit.exe" -OutFile $gitInstaller
+Start-Process -FilePath $gitInstaller -ArgumentList "/VERYSILENT", "/NORESTART" -Wait
+Remove-Item $gitInstaller -Force
+Write-Output "Git for Windows installed successfully"
+
+# [>] Ensure Git is in PATH for this session
+$gitPaths = @(
+    "$env:ProgramFiles\Git\cmd",
+    "$env:ProgramFiles\Git\bin",
+    "$env:ProgramFiles(x86)\Git\cmd",
+    "$env:ProgramFiles(x86)\Git\bin",
+    "$env:LocalAppData\Programs\Git\cmd",
+    "$env:LocalAppData\Programs\Git\bin"
+)
+foreach ($gitPath in $gitPaths) {
+    if (Test-Path $gitPath) {
+        $env:Path = "$gitPath;$env:Path"
+        break
+    }
+}
 
 # [>] Install 7-Zip
 Write-Output "Installing 7-Zip..."
@@ -68,16 +87,16 @@ Remove-Item -Path ".\vc_redist.x64.exe" -Force
 Write-Output "Microsoft Visual C++ Redistributable installed successfully"
 
 # [>] Install MinGW
-$origin = (Get-Item .).FullName
-$work = Join-Path $Env:Temp $(New-Guid)
-New-Item -Type Directory -Path $work | Out-Null
-try {
-    Set-Location "$work"
-    Install-MinGW
-} finally {
-    Set-Location "$origin"
-    Remove-Item -LiteralPath "$work" -Force -Recurse
-}
+# $origin = (Get-Item .).FullName
+# $work = Join-Path $Env:Temp $(New-Guid)
+# New-Item -Type Directory -Path $work | Out-Null
+# try {
+#     Set-Location "$work"
+#     Install-MinGW
+# } finally {
+#     Set-Location "$origin"
+#     Remove-Item -LiteralPath "$work" -Force -Recurse
+# }
 
 # [>] Clone Hollyhock-3
 Write-Output "Cloning Hollyhock-3..."
