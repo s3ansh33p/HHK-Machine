@@ -9,8 +9,8 @@ Vagrant.configure("2") do |config|
     win.vm.box = "gusztavvargadr/windows-server-2022-standard"
     
     win.vm.provider "hyperv" do |h|
-      h.memory = 4096  
-      h.cpus = 4
+      h.memory = 8192  
+      h.cpus = 6
       h.vmname = "Windows Server 2022"
     end
     
